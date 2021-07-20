@@ -60,10 +60,11 @@ pipeline {
                     currentBuild.resultIsBetterOrEqualTo('SUCCESS')
                 }
             }
-
-            stage('kubectl') {
-                steps {
-                    sh "kubectl apply -f file.yaml"
+            stages {
+                stage('kubectl') {
+                    steps {
+                        sh "kubectl apply -f file.yaml"
+                    }
                 }
             }
         }
