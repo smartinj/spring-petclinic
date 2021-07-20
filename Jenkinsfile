@@ -20,7 +20,7 @@ pipeline {
             }
             steps {
                 withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
-                    sh "mvn -DskipTests package -Dspring.profiles.active=mysql"
+                    sh "mvn -DskipTests package"
                 }
             }
         }
@@ -45,8 +45,8 @@ pipeline {
                         script {
                             docker.withTool('19.03.9') {
                                 docker.withRegistry('https://docker-registry:5000', 'registry-id') {
-                                    def image = docker.image('docker-registry:5000/petclinic:v2')
-                                    image.push
+                                    def image = docker.image('docker-registry:5000/petclinic:latest')
+                                    image.push "v2"
                                 }
                             }
                         }
