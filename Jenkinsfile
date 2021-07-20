@@ -53,7 +53,7 @@ pipeline {
                             docker.withTool('19.03.9') {
                                 docker.withRegistry('https://docker-registry:5000', 'registry-id') {
                                     def image = docker.image('docker-registry:5000/petclinic:latest')
-                                    image.push "v4"
+                                    image.push "v2"
                                 }
                             }
                         }
