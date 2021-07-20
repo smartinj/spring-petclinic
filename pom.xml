@@ -212,13 +212,13 @@
                         <goal>push</goal>
                       </goals>
                       <configuration>
-                        <imageName>docker-registry:5000/petclinic:v2</imageName>
+                        <imageName>docker-registry:5000/petclinic</imageName>
                       </configuration>
                     </execution>                    
                 </executions>
                 <configuration>
                     <repository>docker-registry:5000/petclinic</repository>
-                    <tag>v1</tag>
+                    <tag>latest</tag>
                     <useMavenSettingsForAuth>true</useMavenSettingsForAuth>
                     <pullNewerImage>false</pullNewerImage>
                     <buildArgs>
