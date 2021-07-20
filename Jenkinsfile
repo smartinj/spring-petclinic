@@ -10,9 +10,7 @@ pipeline {
         stage('Initialize') {
             steps {
                 script{
-                    int randomStringLength = 3
-                    String charset = ('0'..'9')
-                    IMAGE_TAG = RandomStringUtils.random(randomStringLength, charset.toCharArray())
+                    IMAGE_TAG = Math.abs(new Random().nextInt() % 900) +100
                 }
                 sh "printenv"
             }
