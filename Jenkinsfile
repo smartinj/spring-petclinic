@@ -64,6 +64,7 @@ pipeline {
                 stage('kubectl') {
                     withKubeConfig([credentialsId: 'kube-config', serverUrl: 'https://10.10.10.250:6443']) {
                           sh 'kubectl apply -f my-kubernetes-directory'
+                    }
                 }
             }
         }
