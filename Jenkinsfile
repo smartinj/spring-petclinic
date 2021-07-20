@@ -10,13 +10,7 @@ pipeline {
         stage('Initialize') {
             steps {
                 script {
-                    def generator = { String alphabet, int n ->
-                        new Random().with {
-                            (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
-                        }
-                    }   
-
-                    IMAGE_TAG = generator( (('0'..'9')).join(), 3 )
+                    IMAGE_TAG = '001'
                 }
                 sh "printenv"
             }
