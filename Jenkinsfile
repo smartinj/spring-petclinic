@@ -12,13 +12,6 @@ pipeline {
                 sh "printenv"
             }
         }
-        stage('Compile') {
-            steps {
-                withMaven(maven: 'M3', options: [artifactsPublisher(disabled: true), jacocoPublisher(disabled: true)]) {
-                    sh "mvn clean compile"
-                }
-            }
-        }
         stage('Package') {
             when {
                 expression {
@@ -58,6 +51,19 @@ pipeline {
                             }
                         }
                     }
+                }
+            }
+        }
+        stage('Deploy [k8s]') {
+            when {
+                expression {
+                    currentBuild.resultIsBetterOrEqualTo('SUCCESS')
+                }
+            }
+
+            stage('kubectl') {
+                steps {
+                    sh "kubectl apply -f file.yaml"
                 }
             }
         }
