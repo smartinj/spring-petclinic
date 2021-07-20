@@ -11,7 +11,7 @@ pipeline {
             steps {
                 script{
                     int randomStringLength = 3
-                    String charset = (('a'..'z') + ('A'..'Z') + ('0'..'9')).join()
+                    String charset = ('0'..'9')
                     IMAGE_TAG = RandomStringUtils.random(randomStringLength, charset.toCharArray())
                 }
                 sh "printenv"
