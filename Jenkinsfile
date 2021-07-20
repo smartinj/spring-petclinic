@@ -47,9 +47,8 @@ pipeline {
                         script {
                             docker.withTool('19.03.9') {
                                 docker.withRegistry('https://docker-registry:5000', 'registry-id') {
-                                    def imagename= "${IMAGE_NAME}:${IMAGE_TAG}"
-                                    def image = docker.image('${IMAGE_NAME}:${IMAGE_TAG}')
-                                    image.push
+                                    def image = docker.image('docker-registry:5000/petclinic:latest')
+                                    image.push "${IMAGE_TAG}"
                                 }
                             }
                         }
@@ -67,7 +66,7 @@ pipeline {
                 stage('kubectl') {
                     steps {
                         withKubeConfig([credentialsId: 'kube-config', serverUrl: 'https://10.10.10.250:6443']) {
-                              sh ".tools/ytt -v image=${IMAGE_NAME}:${IMAGE_TAG} -f .tools/overlay-image.yaml -f k8s/petclinic-deployment.yaml | kubectl apply -f -"
+                              sh ".tools/ytt -v image=docker-registry:5000/petclinic:${IMAGE_TAG} -f .tools/overlay-image.yaml -f k8s/petclinic-deployment.yaml | kubectl apply -f -"
                         }
                     }
                 }
