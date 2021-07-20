@@ -4,14 +4,13 @@ pipeline {
         jdk 'JDK 1.8'
     }
     environment {
-        IMAGE_TAG = '000'
+        IMAGE_NAME = "docker-registry:5000/petclinic"
+        IMAGE_TAG = "000"
     }    
     stages {
         stage('Initialize') {
             steps {
-                script {
-                    IMAGE_TAG = '001'
-                }
+                IMAGE_TAG = "001"
                 sh "printenv"
             }
         }
@@ -38,7 +37,7 @@ pipeline {
                     steps {
                         dir(".") {
                             withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
-                                sh "mvn dockerfile:build -Ddockerfile.skip=false "
+                                sh "mvn dockerfile:build -Ddockerfile.skip=false"
                             }
                         }
                     }
@@ -48,7 +47,7 @@ pipeline {
                         script {
                             docker.withTool('19.03.9') {
                                 docker.withRegistry('https://docker-registry:5000', 'registry-id') {
-                                    def image = docker.image("docker-registry:5000/petclinic:${IMAGE_TAG}")
+                                    def image = docker.image("${IMAGE_NAME":${IMAGE_TAG}")
                                     image.push
                                 }
                             }
@@ -67,7 +66,7 @@ pipeline {
                 stage('kubectl') {
                     steps {
                         withKubeConfig([credentialsId: 'kube-config', serverUrl: 'https://10.10.10.250:6443']) {
-                              sh ".tools/ytt -v image=docker-registry:5000/petclinic:${IMAGE_TAG} -f .tools/overlay-image.yaml -f k8s/petclinic-deployment.yaml | kubectl apply -f -"
+                              sh ".tools/ytt -v image=${IMAGE_NAME":${IMAGE_TAG} -f .tools/overlay-image.yaml -f k8s/petclinic-deployment.yaml | kubectl apply -f -"
                         }
                     }
                 }
