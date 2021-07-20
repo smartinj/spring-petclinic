@@ -16,7 +16,7 @@ pipeline {
                         }
                     }               
 
-                    IMAGE_TAG= generator( (('0'..'9')).join(), 3 )
+                    IMAGE_TAG= generator(('0'..'9'), 3 )
                 }
                 sh "printenv"
             }
