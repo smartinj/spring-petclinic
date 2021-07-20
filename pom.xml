@@ -212,7 +212,7 @@
                         <goal>push</goal>
                       </goals>
                       <configuration>
-                        <imageName>docker-registry:5000/petclinic:v1</imageName>
+                        <imageName>docker-registry:5000/petclinic:v2</imageName>
                       </configuration>
                     </execution>                    
                 </executions>
