@@ -64,7 +64,7 @@ pipeline {
                 stage('kubectl') {
                     steps {
                         withKubeConfig([credentialsId: 'kube-config', serverUrl: 'https://10.10.10.250:6443']) {
-                              sh 'kubectl apply -f my-kubernetes-directory'
+                              sh 'kubectl apply -f ./k8s/petclinic-deployment.yaml'
                         }
                     }
                 }
