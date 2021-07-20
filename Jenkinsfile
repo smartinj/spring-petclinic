@@ -4,12 +4,20 @@ pipeline {
         jdk 'JDK 1.8'
     }
     environment {
-        IMAGE_NAME = "docker-registry:5000/petclinic"
         IMAGE_TAG = "000"
     }    
     stages {
         stage('Initialize') {
             steps {
+                script{
+                    def generator = { String alphabet, int n ->
+                        new Random().with {
+                            (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+                        }
+                    }               
+
+                    IMAGE_TAG= generator( (('0'..'9')).join(), 3 )
+                }
                 sh "printenv"
             }
         }
