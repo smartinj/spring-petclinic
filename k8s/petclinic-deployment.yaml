@@ -20,6 +20,7 @@ spec:
       containers:
       - name: petclinic
         image: docker-registry:5000/petclinic:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
 ---
@@ -28,9 +29,11 @@ kind: Service
 metadata:
   name: petclinic-service
 spec:
+  type: NodePort
   selector:
     app: petclinic
   ports:
   - protocol: TCP
     port: 8080
     targetPort: 8080
+    nodePort: 30888
