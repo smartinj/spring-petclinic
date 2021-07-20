@@ -12,13 +12,6 @@ pipeline {
                 sh "printenv"
             }
         }
-        stage('Compile') {
-            steps {
-                withMaven(maven: 'M3', options: [artifactsPublisher(disabled: true), jacocoPublisher(disabled: true)]) {
-                    sh "mvn clean compile"
-                }
-            }
-        }        
         stage('Package') {
             when {
                 expression {
@@ -27,7 +20,7 @@ pipeline {
             }
             steps {
                 withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
-                    sh "mvn -DskipTests package"
+                    sh "mvn clean -Dcheckstyle.skip -DskipTests package"
                 }
             }
         }
