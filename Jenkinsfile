@@ -4,11 +4,20 @@ pipeline {
         jdk 'JDK 1.8'
     }
     environment {
-        SPRING_PROFILES_ACTIVE = "ci"
-    }
+        IMAGE_TAG = '000'
+    }    
     stages {
         stage('Initialize') {
             steps {
+                script {
+                    def generator = { String alphabet, int n ->
+                        new Random().with {
+                            (1..n).collect { alphabet[ nextInt( alphabet.length() ) ] }.join()
+                        }
+                    }   
+
+                    IMAGE_TAG = generator( (('0'..'9')).join(), 3 )
+                }
                 sh "printenv"
             }
         }
@@ -45,8 +54,8 @@ pipeline {
                         script {
                             docker.withTool('19.03.9') {
                                 docker.withRegistry('https://docker-registry:5000', 'registry-id') {
-                                    def image = docker.image('docker-registry:5000/petclinic:latest')
-                                    image.push "v2"
+                                    def image = docker.image('docker-registry:5000/petclinic:${IMAGE_TAG}')
+                                    image.push
                                 }
                             }
                         }
@@ -64,7 +73,7 @@ pipeline {
                 stage('kubectl') {
                     steps {
                         withKubeConfig([credentialsId: 'kube-config', serverUrl: 'https://10.10.10.250:6443']) {
-                              sh '.tools/ytt -v image=xxxxx -f .tools/overlay-image.yaml -f k8s/petclinic-deployment.yaml | kubectl apply -f -' 
+                              sh '.tools/ytt -v image=docker-registry:5000/petclinic:${IMAGE_TAG} -f .tools/overlay-image.yaml -f k8s/petclinic-deployment.yaml | kubectl apply -f -' 
                         }
                     }
                 }
