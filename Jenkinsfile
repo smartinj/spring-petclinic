@@ -10,7 +10,6 @@ pipeline {
     stages {
         stage('Initialize') {
             steps {
-                IMAGE_TAG = "001"
                 sh "printenv"
             }
         }
