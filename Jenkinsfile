@@ -47,7 +47,8 @@ pipeline {
                         script {
                             docker.withTool('19.03.9') {
                                 docker.withRegistry('https://docker-registry:5000', 'registry-id') {
-                                    def image = docker.image('${IMAGE_NAME:${IMAGE_TAG}')
+                                    def imagename= "${IMAGE_NAME}:${IMAGE_TAG}"
+                                    def image = docker.image("${imagename}")
                                     image.push
                                 }
                             }
