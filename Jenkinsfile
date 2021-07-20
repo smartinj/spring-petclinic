@@ -71,7 +71,7 @@ pipeline {
                 stage('kubectl') {
                     steps {
                         withKubeConfig([credentialsId: 'kube-config', serverUrl: 'https://10.10.10.250:6443']) {
-                              sh 'kubectl apply -f /home/smartinj/tanzu-demo/petclinic-deployment.yaml'
+                              sh '.tools/ytt -v image=xxxxx -f .tools/overlay-image.yaml -f k8s/petclinic-deployment.yaml | kubectl apply -f -' 
                         }
                     }
                 }
