@@ -20,7 +20,7 @@ pipeline {
             }
             steps {
                 withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
-                    sh "mvn -DskipTests package"
+                    sh "mvn -DskipTests package -Dspring.profiles.active=mysql"
                 }
             }
         }
@@ -35,7 +35,7 @@ pipeline {
                     steps {
                         dir(".") {
                             withMaven(maven: 'M3', options: [jacocoPublisher(disabled: true)]) {
-                                sh "mvn dockerfile:build -Ddockerfile.skip=false"
+                                sh "mvn dockerfile:build -Ddockerfile.skip=false "
                             }
                         }
                     }
